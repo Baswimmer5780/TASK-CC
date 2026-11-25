@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <title>TASK CONTROL CENTER</title>
+    <script src="icons.js" defer></script>
+    <script src="database/storage.js" defer></script>
+    <script src="priority.js" defer></script>
+    <script src="main.js" defer></script>
+</head>
+<body>
+<main>
+    <div id="header">
+        <header>
+            <i data-lucide="crosshair" class="logo-icon"></i>
+            <div class="header-title">
+                <h1>TASK CONTROL CENTER</h1>
+                <p>PERSONAL MANAGEMENT SYSTEM / v0.4</p>
+            </div>
+            <div class="system-status">
+                <div id="networkStatus" class="online">● CHECKING</div><div id="storageStatus">DB / LOADING</div><div id="cacheStatus">CACHE / CHECKING</div>
+                <time id="currentDate"></time>
+            </div>
+        </header>
+        <nav aria-label="ページ切り替え">
+            <button type="button" class="active" data-tab="today">TODAY</button>
+            <button type="button" data-tab="all">ALL TASKS</button>
+            <button type="button" data-tab="history">HISTORY</button>
+        <button type="button" data-tab="manage" disabled>MANAGE</button>
+        </nav>
+    </div>
+    <div class="card" id="dashboard">
+        <p class="section-label">01 / STATUS OVERVIEW</p>
+        <div class="section-heading">
+            <h2>タスク管制状況</h2>
+            <i data-lucide="activity"></i>
+        </div>
+        <div class="grid-container1">
+            <div id="pending" class="status panel"><span>未完了</span><strong>00</strong></div>
+            <div id="critical" class="status panel"><span>特別警戒</span><strong>00</strong></div>
+            <div id="overdue" class="status panel"><span>期限超過</span><strong>00</strong></div>
+            <div id="completed" class="status panel"><span>完了済</span><strong>00</strong></div>
+            <div id="priorityDistribution" class="panel">
+                <div id="titleOfPriorityDistribution" class="panel-title">PRIORITY DISTRIBUTION / 優先度分布</div>
+                <div id="counter1" class="counter rank-s">0</div>
+                <div id="counter2" class="counter rank-s-minus">0</div>
+                <div id="counter3" class="counter rank-a-plus">0</div>
+                <div id="counter4" class="counter rank-a">0</div>
+                <div id="counter5" class="counter rank-b">0</div>
+                <div id="counter6" class="counter rank-c">0</div>
+                <div id="counter7" class="counter rank-d">0</div>
+                <div id="counter8" class="counter rank-e">0</div>
+                <div id="meter1" class="meter rank-s"><div class="meter-fill"></div></div>
+                <div id="meter2" class="meter rank-s-minus"><div class="meter-fill"></div></div>
+                <div id="meter3" class="meter rank-a-plus"><div class="meter-fill"></div></div>
+                <div id="meter4" class="meter rank-a"><div class="meter-fill"></div></div>
+                <div id="meter5" class="meter rank-b"><div class="meter-fill"></div></div>
+                <div id="meter6" class="meter rank-c"><div class="meter-fill"></div></div>
+                <div id="meter7" class="meter rank-d"><div class="meter-fill"></div></div>
+                <div id="meter8" class="meter rank-e"><div class="meter-fill"></div></div>
+                <div class="priorityMark">S</div>
+                <div class="priorityMark">S−</div>
+                <div class="priorityMark">A+</div>
+                <div class="priorityMark">A</div>
+                <div class="priorityMark">B</div>
+                <div class="priorityMark">C</div>
+                <div class="priorityMark">D</div>
+                <div class="priorityMark">E</div>
+            </div>
+            <div id="specialAlert" class="panel" hidden>
+                <div id="alert"><i data-lucide="triangle-alert"></i></div>
+                <div id="alertTitle">SPECIAL ALERT</div>
+                <div id="alertStatus">特別警戒対象のタスクが0件あります。</div>
+            </div>
+            <div id="workload" class="panel">
+                <div id="workloadTitle" class="panel-title">TODAY'S WORKLOAD</div>
+                <div id="workloadTime">0 / 180 min</div>
+                <div id="workloadStatusBar" role="progressbar" aria-label="本日の作業負荷" aria-valuemin="0" aria-valuemax="180" aria-valuenow="0"><div id="workloadFill"></div></div>
+                <div id="workloadStatus">本日の残り作業量 / 作業可能時間</div>
+            </div>
+        </div>
+        <section class="task-section">
+            <p class="section-label">02 / TASK OPERATIONS</p>
+            <div class="section-heading">
+                <h2 id="taskHeading">本日の推奨タスク</h2>
+                <button id="add" class="primary" disabled>＋ タスク追加</button>
+            </div>
+            <div class="grid-container2">
+            </div>
+            <p id="empty">該当するタスクはありません。</p>
+        </section>
+    </div>
+    <section id="management" class="card" hidden><p class="section-label">03 / MANAGEMENT</p><h2>ジャンル管理</h2><p class="hint">タスク登録時に選択するジャンルを管理します。</p><form id="categoryForm" class="category-form"><input id="categoryName" required maxlength="80" placeholder="新しいジャンル名" aria-label="新しいジャンル名"><button class="primary">追加</button></form><p id="categoryError" role="alert"></p><div id="categoryList"></div><button id="manageSettings" class="management-settings">作業時間・バックアップ設定</button></section>
+    <footer>
+        <span>SYSTEM / PRIORITY ENGINE v0.4.0</span>
+        <button type="button" id="settings" disabled>設定</button>
+    </footer>
+<p id="message" role="status"></p>
+</main>
+<dialog id="editor"><form id="taskForm">
+<h2 id="formTitle">タスク追加</h2>
+<label>タスク名<input name="name" required maxlength="200"></label>
+<label>ジャンル<select name="category" required></select></label>
+
+<fieldset class="importance-field"><legend>重要度（手動設定）</legend><div class="importance-options"><label style="--choice:var(--priority-s)"><input type="radio" name="importance" value="特級" ><span>特級</span></label><label style="--choice:var(--priority-a-plus)"><input type="radio" name="importance" value="高" ><span>高</span></label><label style="--choice:var(--priority-a)"><input type="radio" name="importance" value="中" checked><span>中</span></label><label style="--choice:var(--priority-c)"><input type="radio" name="importance" value="低" ><span>低</span></label><label style="--choice:var(--priority-e)"><input type="radio" name="importance" value="任意" ><span>任意</span></label></div><p class="hint">優先度は期限・所要時間から自動計算します。</p></fieldset>
+<label>期限（任意）<input type="datetime-local" name="due"></label>
+<label>推定所要時間（分）<input type="number" name="minutes" min="1" max="100000" value="30" required></label>
+<label>備考<textarea name="notes" maxlength="4000"></textarea></label>
+<label class="inline"><input type="checkbox" name="today"> 本日必ず取り組む</label>
+<p id="preview" class="hint"></p><p id="formError" role="alert"></p><div class="actions"><button type="button" id="cancel">キャンセル</button><button class="primary" type="submit">保存</button></div>
+</form></dialog>
+<dialog id="config"><form id="configForm"><h2>設定</h2><label>1日の作業可能時間（分）<input name="capacity" type="number" min="1" max="1440" required></label><p class="hint">データはこのブラウザ内に保存されます。</p><button type="button" id="export">バックアップ書き出し</button><label>バックアップ復元<input type="file" id="import" accept=".json,application/json"></label><p id="configError" role="alert"></p><div class="actions"><button type="button" id="cancelConfig">閉じる</button><button class="primary">保存</button></div></form></dialog>
+</body>
+</html>

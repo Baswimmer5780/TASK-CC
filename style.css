@@ -1,0 +1,161 @@
+:root {
+    background-color: var(--color-background);
+
+    /* 基本カラー */
+    --color-primary: #09090B;
+    --color-background: #18181B;
+    --color-surface: #27272A;
+    --color-hover: #323238;
+    --color-accent: #60A5FA;
+
+    /* 文字 */
+    --color-text: #E4E4E7;
+    --color-text-muted: #A1A1AA;
+    --color-text-disabled: #71717A;
+
+    /* 境界線 */
+    --color-border: #3F3F46;
+
+    /* 状態表示 */
+    --color-success: #22C55E;
+    --color-warning: #F97316;
+    --color-error: #EF4444;
+
+    /* 優先度 */
+    --priority-s: #800080;
+    --priority-s-minus: #B453B5;
+    --priority-a-plus: #EF4444;
+    --priority-a: #F97316;
+    --priority-b: #EAB308;
+    --priority-c: #22C55E;
+    --priority-d: #3B82F6;
+    --priority-e: #71717A;
+}
+
+/* 共通設定 */
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--color-text); font-family: Arial, "Yu Gothic", Meiryo, sans-serif; font-size: 14px; font-weight: 500; }
+button { font: inherit; cursor: pointer; }
+main { max-width: 650px; margin: 20px auto; border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; }
+#header { background: var(--color-primary); }
+header { display: flex; align-items: center; gap: 12px; padding: 16px; }
+.logo-icon { width: 32px; height: 32px; color: var(--color-accent); flex-shrink: 0; }
+.header-title { flex: 1; min-width: 0; }
+header h1 { margin: 0; font-size: 17px; }
+header p { margin: 4px 0 0; font-size: 10px; color: var(--color-text-muted); }
+.system-status { text-align: right; font-size: 11px; color: var(--color-text-muted); white-space: nowrap; }
+.online { color: var(--color-success); margin-bottom: 5px; }
+nav { display: flex; }
+nav button { flex: 1; border: 0; border-bottom: 2px solid var(--color-surface); padding: 12px 4px; background: transparent; color: var(--color-text-muted); font-size: 13px; }
+nav button.active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+nav button:hover { background: var(--color-surface); }
+.card { padding: 16px; }
+.section-label { font-size: 11px; color: var(--color-text-muted); letter-spacing: .04em; margin: 0 0 6px; }
+.section-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-heading h2 { font-size: 21px; margin: 0; }
+.section-heading svg { color: var(--color-accent); }
+/* 状況表示：4列のグリッド */
+.grid-container1 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.panel { background: var(--color-primary); border: 1px solid var(--color-border); border-radius: 4px; padding: 14px; }
+.status { display: grid; gap: 10px; padding: 12px; }
+.status span { color: var(--color-text-muted); font-size: 12px; }
+.status strong { font-size: 30px; font-variant-numeric: tabular-nums; }
+#critical strong { color: var(--priority-s-minus); }
+#overdue strong { color: var(--color-error); }
+#completed strong { color: var(--color-success); }
+/* 優先度分布：元の8列構造を維持 */
+#priorityDistribution { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); grid-template-rows: auto auto 44px auto; gap: 6px; text-align: center; }
+#titleOfPriorityDistribution { grid-column: 1 / -1; text-align: left; margin-bottom: 8px; }
+.panel-title { color: var(--color-text-muted); font-size: 11px; }
+.counter { color: var(--rank-color); font-variant-numeric: tabular-nums; }
+.meter { background: var(--color-background); display: flex; align-items: end; border-radius: 3px; overflow: hidden; }
+.meter-fill { width: 100%; height: 100%; background: var(--rank-color); transition: height .2s; }
+.priorityMark { color: var(--color-text-muted); font-size: 12px; }
+/* 警戒・作業負荷 */
+#specialAlert { grid-column: 1 / -1; display: grid; grid-template-columns: 26px 1fr; gap: 5px 10px; align-items: center; background: #80008022; border-color: var(--priority-s); }
+#alert { grid-row: 1 / 3; color: #C084FC; }
+#alertTitle { color: #D8B4FE; font-weight: bold; font-size: 13px; }
+#alertStatus { font-size: 12px; }
+#workload { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+#workloadTime { text-align: right; font-variant-numeric: tabular-nums; }
+#workloadStatusBar, #workloadStatus { grid-column: 1 / -1; }
+#workloadStatusBar { height: 8px; border-radius: 3px; background: var(--color-surface); overflow: hidden; }
+#workloadFill { height: 100%; width: 100%; background: var(--color-warning); transition: width .2s; }
+#workloadStatus { font-size: 11px; color: var(--color-text-muted); }
+/* タスク一覧 */
+.task-section { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+.task-section .section-heading { margin-bottom: 12px; }
+.sort-label { font-size: 11px; color: var(--color-text-muted); white-space: nowrap; }
+.grid-container2 { display: grid; gap: 8px; }
+.task { display: grid; grid-template-columns: 24px minmax(0, 1fr) 55px 36px; grid-template-rows: auto auto; gap: 4px 10px; align-items: center; background: var(--color-surface); border-left: 4px solid var(--rank-color); border-radius: 4px; padding: 10px; }
+.task:hover { background: var(--color-hover); }
+.checkbox { grid-row: 1 / 3; grid-column: 1; }
+.checkbox input { width: 17px; height: 17px; margin: 0; accent-color: var(--color-accent); cursor: pointer; }
+.taskName { grid-row: 1; grid-column: 2; font-weight: bold; overflow-wrap: anywhere; }
+.taskInfo { grid-row: 2; grid-column: 2; color: var(--color-text-muted); font-size: 11px; }
+.taskInfo .late { color: var(--color-error); }
+.score { grid-row: 1; grid-column: 3; color: var(--score-color, var(--rank-color)); font-weight: bold; font-size: 19px; text-align: right; font-variant-numeric: tabular-nums; }
+.SCORE { grid-row: 2; grid-column: 3; color: var(--color-text-muted); font-size: 10px; text-align: right; }
+.priority { grid-row: 1 / 3; grid-column: 4; background: var(--rank-color); color: var(--rank-text, #09090B); height: 36px; display: grid; place-items: center; border-radius: 3px; font-weight: bold; }
+.rank-s { --rank-color: var(--priority-s); --score-color: #C084FC; --rank-text: white; }
+.rank-s-minus { --rank-color: var(--priority-s-minus); }
+.rank-a-plus { --rank-color: var(--priority-a-plus); }
+.rank-a { --rank-color: var(--priority-a); }
+.rank-b { --rank-color: var(--priority-b); }
+.rank-c { --rank-color: var(--priority-c); }
+.rank-d { --rank-color: var(--priority-d); --rank-text: white; --score-color: #60A5FA; }
+.rank-e { --rank-color: var(--priority-e); --rank-text: white; --score-color: #A1A1AA; }
+footer { display: flex; justify-content: space-between; align-items: center; padding: 0 16px 16px; color: var(--color-text-muted); font-size: 10px; }
+#reset { background: transparent; color: var(--color-text-muted); border: 1px solid var(--color-border); border-radius: 4px; padding: 5px 10px; font-size: 12px; }
+#empty { text-align: center; color: var(--color-text-muted); padding: 20px; }
+[hidden] { display: none !important; }
+@media (max-width: 680px) { main { margin: 0; border: 0; border-radius: 0; } }
+@media (max-width: 420px) { header, .card { padding: 12px; } header h1 { font-size: 14px; } header p { font-size: 8px; } .system-status { font-size: 9px; } .logo-icon { width: 24px; height: 24px; } .grid-container1 { gap: 6px; } .status { padding: 8px; } .status span { font-size: 10px; } .status strong { font-size: 24px; } .task { gap: 4px 6px; grid-template-columns: 20px minmax(0,1fr) 42px 32px; } .priority { height: 32px; } .section-heading h2 { font-size: 18px; } }
+.checkbox input { appearance:none; width:22px; height:22px; border:2px solid #A1A1AA; border-radius:50%; display:grid; place-items:center; background:transparent; }
+.checkbox input:checked { background:var(--color-success); border-color:var(--color-success); }
+.checkbox input:checked::after { content:'✓'; color:#09090B; font-weight:bold; }
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible { outline:2px solid var(--color-accent); outline-offset:3px; }
+.primary { background:var(--color-accent); color:#09090B; border:0; border-radius:4px; padding:9px 12px; font-weight:bold; }
+#settings,.actions button:not(.primary),.task-actions button { background:transparent; color:var(--color-text-muted); border:1px solid var(--color-border); border-radius:4px; padding:5px 9px; }
+.task-actions { grid-column:2/-1; display:flex; gap:6px; justify-content:flex-end; }
+.task-notes { grid-column:2/-1; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--color-text-muted); font-size:12px; }
+dialog { color:var(--color-text); background:var(--color-surface); border:1px solid var(--color-border); border-radius:8px; width:min(440px,94vw); max-height:90vh; overflow:auto; padding:20px; color-scheme:dark; }
+dialog::backdrop { background:#000a; } dialog h2 { margin-top:0; } dialog form { display:grid; gap:12px; } dialog label { display:grid; gap:5px; } dialog input,dialog select,dialog textarea { font:inherit; padding:9px; border:1px solid var(--color-border); background:var(--color-primary); color:var(--color-text); border-radius:4px; width:100%; } dialog .inline { display:flex; align-items:center; } dialog .inline input { width:auto; } .actions { display:flex; justify-content:flex-end; gap:10px; } #message { color:var(--color-text-muted); padding:0 16px; overflow-wrap:anywhere; } #message:empty { display:none; } .task.completed .taskName { text-decoration:line-through; }
+/* 同一ランクの表示色を統一 */
+.score { color:var(--rank-color); }
+.meter-fill { height:0; }
+#workloadFill { width:0; }
+.importance-field { margin:0; padding:0; border:0; min-width:0; }
+.importance-options { display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:8px; }
+.importance-options label { position:relative;cursor:pointer; }
+.importance-options input { position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer; }
+.importance-options span { text-align:center;border:1px solid var(--choice);border-bottom:3px solid var(--choice);padding:10px 2px;border-radius:4px;background:#18181b; }
+.importance-options input:checked+span { background:var(--choice);color:white; font-weight:bold;box-shadow:inset 0 0 0 2px #fff9; }
+.importance-options input:focus-visible+span { outline:2px solid #60a5fa;outline-offset:2px; }
+.hint { color:var(--color-text-muted);font-size:12px;margin:4px 0; }
+#formError,#configError { color:#fca5a5;margin:0;font-size:12px; }
+#formError:empty,#configError:empty { display:none; }
+dialog { width:min(480px,94vw);background:#18181b;border-color:#52525b; }
+dialog h2 { border-bottom:1px solid var(--color-border);padding-bottom:12px; }
+dialog button:disabled { opacity:.5;cursor:wait; }
+/* v0.4: 平面の重要度選択 */
+.importance-options span { border:0; border-radius:2px; background:color-mix(in srgb,var(--choice) 15%,#18181b); color:#e4e4e7; box-shadow:none; }
+.importance-options input:checked+span { background:var(--choice); color:#09090b; box-shadow:none; }
+.importance-options label:first-child input:checked+span,.importance-options label:last-child input:checked+span { color:white; }
+.importance-options input:focus-visible+span { outline:2px solid var(--color-accent); }
+.online.offline { color:var(--color-warning); }
+#storageStatus { margin-bottom:4px; font-size:10px; }
+.category-form,.category-row { display:flex; align-items:center; gap:8px; }
+.category-form { margin:16px 0; }
+.category-form input,.category-row input { min-width:0; flex:1; background:var(--color-primary); border:1px solid var(--color-border); color:var(--color-text); padding:10px; font:inherit; border-radius:3px; }
+.category-row { padding:12px 0; border-bottom:1px solid var(--color-border); }
+.category-label { flex:1; min-width:0; overflow-wrap:anywhere; }
+.category-label small { display:block; color:var(--color-text-muted); margin-top:4px; }
+.category-row button,.management-settings { background:var(--color-surface); color:var(--color-text); border:0; padding:8px; border-radius:3px; }
+.category-row button:disabled { opacity:.35; cursor:not-allowed; }
+.management-settings { margin-top:20px; }
+#categoryError { color:#fca5a5; }
+
+#cacheStatus { margin-bottom:4px; font-size:9px; color:var(--color-text-muted); }
+.category-form button:disabled { opacity:.5; cursor:wait; }
+@media (max-width:420px) { #storageStatus,#cacheStatus { font-size:8px; } nav button { font-size:11px; } }
