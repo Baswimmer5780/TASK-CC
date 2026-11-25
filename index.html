@@ -17,7 +17,7 @@
             <i data-lucide="crosshair" class="logo-icon"></i>
             <div class="header-title">
                 <h1>TASK CONTROL CENTER</h1>
-                <p>PERSONAL MANAGEMENT SYSTEM / v0.4</p>
+                <p>PERSONAL MANAGEMENT SYSTEM / v0.5</p>
             </div>
             <div class="system-status">
                 <div id="networkStatus" class="online">● CHECKING</div><div id="storageStatus">DB / LOADING</div><div id="cacheStatus">CACHE / CHECKING</div>
@@ -28,6 +28,7 @@
             <button type="button" class="active" data-tab="today">TODAY</button>
             <button type="button" data-tab="all">ALL TASKS</button>
             <button type="button" data-tab="history">HISTORY</button>
+        <button type="button" data-tab="calendar" disabled>CALENDAR</button>
         <button type="button" data-tab="manage" disabled>MANAGE</button>
         </nav>
     </div>
@@ -92,9 +93,13 @@
             <p id="empty">該当するタスクはありません。</p>
         </section>
     </div>
-    <section id="management" class="card" hidden><p class="section-label">03 / MANAGEMENT</p><h2>ジャンル管理</h2><p class="hint">タスク登録時に選択するジャンルを管理します。</p><form id="categoryForm" class="category-form"><input id="categoryName" required maxlength="80" placeholder="新しいジャンル名" aria-label="新しいジャンル名"><button class="primary">追加</button></form><p id="categoryError" role="alert"></p><div id="categoryList"></div><button id="manageSettings" class="management-settings">作業時間・バックアップ設定</button></section>
+    <section id="calendarPage" class="card" hidden>
+<p class="section-label">03 / CAPACITY PLANNING</p><h2>作業可能時間カレンダー</h2><p class="hint">日付を選択して作業可能時間を登録。未登録日は設定の標準時間で仮計算します。</p>
+<div class="calendar-toolbar"><button id="prevMonth" aria-label="前月">‹</button><strong id="calendarMonth"></strong><button id="nextMonth" aria-label="翌月">›</button><button id="thisMonth">今月</button></div>
+<div class="calendar-grid" id="calendarGrid"></div><p class="hint"><span class="legend missing"></span> 未登録　<span class="legend registered"></span> 登録済　<span class="legend zero"></span> 0分（休み）</p><p id="monthSummary" class="hint"></p></section>
+<section id="management" class="card" hidden><p class="section-label">04 / MANAGEMENT</p><h2>ジャンル管理</h2><p class="hint">タスク登録時に選択するジャンルを管理します。</p><form id="categoryForm" class="category-form"><input id="categoryName" required maxlength="80" placeholder="新しいジャンル名" aria-label="新しいジャンル名"><button class="primary">追加</button></form><p id="categoryError" role="alert"></p><div id="categoryList"></div><button id="manageSettings" class="management-settings">作業時間・バックアップ設定</button></section>
     <footer>
-        <span>SYSTEM / PRIORITY ENGINE v0.4.0</span>
+        <span>SYSTEM / PRIORITY ENGINE v0.5.0</span>
         <button type="button" id="settings" disabled>設定</button>
     </footer>
 <p id="message" role="status"></p>
@@ -111,6 +116,7 @@
 <label class="inline"><input type="checkbox" name="today"> 本日必ず取り組む</label>
 <p id="preview" class="hint"></p><p id="formError" role="alert"></p><div class="actions"><button type="button" id="cancel">キャンセル</button><button class="primary" type="submit">保存</button></div>
 </form></dialog>
-<dialog id="config"><form id="configForm"><h2>設定</h2><label>1日の作業可能時間（分）<input name="capacity" type="number" min="1" max="1440" required></label><p class="hint">データはこのブラウザ内に保存されます。</p><button type="button" id="export">バックアップ書き出し</button><label>バックアップ復元<input type="file" id="import" accept=".json,application/json"></label><p id="configError" role="alert"></p><div class="actions"><button type="button" id="cancelConfig">閉じる</button><button class="primary">保存</button></div></form></dialog>
+<dialog id="config"><form id="configForm"><h2>設定</h2><label>未登録日の標準作業可能時間（分）<input name="capacity" type="number" min="1" max="1440" required></label><p class="hint">データはこのブラウザ内に保存されます。</p><button type="button" id="export">バックアップ書き出し</button><label>バックアップ復元<input type="file" id="import" accept=".json,application/json"></label><p id="configError" role="alert"></p><div class="actions"><button type="button" id="cancelConfig">閉じる</button><button class="primary">保存</button></div></form></dialog>
+<dialog id="capacityEditor"><form id="capacityForm"><h2>作業可能時間</h2><p id="capacityDate"></p><label>時間（時）<input name="hours" type="number" min="0" max="24" step="1" required></label><label>分<input name="minutes" type="number" min="0" max="59" step="1" required></label><p class="hint">0時間0分は休みとして登録されます。</p><p id="capacityError" role="alert"></p><div class="actions"><button type="button" id="clearCapacity">登録解除</button><button type="button" id="cancelCapacity">取消</button><button class="primary">保存</button></div></form></dialog>
 </body>
 </html>

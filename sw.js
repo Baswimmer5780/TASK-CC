@@ -1,6 +1,6 @@
 // Cache only this application's static shell. IndexedDB data is not cached here.
 const PREFIX='tcc-shell:'+self.registration.scope+':';
-const CACHE=PREFIX+'v04';
+const CACHE=PREFIX+'v05';
 const SHELL=['./','./index.html','./style.css','./icons.js','./main.js','./priority.js','./database/storage.js'].map(p=>new URL(p,self.registration.scope).href);
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL))));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith(PREFIX)&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
